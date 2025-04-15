@@ -23,4 +23,10 @@ public class BoardDto {
     this.memberid = board.getMemberid();
     this.viewcnt = board.getViewcnt();
   }
+
+  public BoardDto(String title, String content, Integer memberid) {
+    this.title = title;
+    this.content = content;
+    this.memberid = memberid;
+  }
 }

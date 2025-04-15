@@ -30,4 +30,12 @@ public class Board extends BaseTimeEntity{
     this.viewcnt = viewcnt;
   }
 
+  public void addViewCnt() {
+    this.viewcnt ++;
+  }
+
+  public void updateBoard(String title, String content) {
+    this.title = title;
+    this.content = content;
+  }
 }
