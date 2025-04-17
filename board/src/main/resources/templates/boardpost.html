@@ -1,37 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/default}">
+
 <head>
-<meta charset="UTF-8">
-             <meta name="viewport" content="width=device-width, initial-scale=1">
-             <title>boardpost</title>
+  <title>게시글 작성</title>
 </head>
-<style>
+<!-- ✅ JS: 버튼 클릭 시 fetch로 JSON 전송 -->
 
-  .layout {
-        width : 500px;
-        margin : 0 auto;
-        margin-top : 40px;
-  }
+<div layout:fragment="content">
+  <div class="container mt-5">
+    <h2 class="mb-4">게시글 작성</h2>
 
-  .layout input {
-    width : 100%;
-    box-sizing : border-box;
-    margin-top : 10px;
-  }
+    <!-- ✅ form 제거하고 input만 유지 -->
+    <div class="p-4 bg-white rounded shadow-sm">
+      <div class="mb-3">
+        <label for="title" class="form-label">제목</label>
+        <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" required>
+      </div>
 
-  .layout textarea {
-    width : 100%;
-    margin-top : 10px;
-    min-height : 300px;
-  }
-</style>
-<body>
-  <div class="layout">
-    <form action="/board/writepost" method="post">
-        <input type="text" name="title">
-        <textarea name="content"></textarea>
-        <button type="submit">작성</button>
-    </form>
+      <div class="mb-3">
+        <label for="content" class="form-label">내용</label>
+        <textarea class="form-control" id="content" rows="5" placeholder="내용을 입력하세요"
+                  required></textarea>
+      </div>
+
+      <!-- ✅ type="button"으로 설정 -->
+      <button type="button" class="btn btn-primary" id="submitBtn">
+        작성하기
+      </button>
+    </div>
   </div>
-</body>
+</div>
+
+
 </html>
