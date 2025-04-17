@@ -30,10 +30,9 @@ public class BoardController {
     return "boardpost";
   }
 
-
   @PostMapping("/board/writeboard")
   @Operation(summary = "게시물 작성", description = "게시물 작성 API")
-  public String boardWritePost(@RequestBody BoardRequestDto boardVal) throws Exception{
+  public String boardWritePost(@RequestBody BoardRequestDto boardVal) throws Exception {
     try {
       System.out.println("제목 : " + boardVal.getTitle());
       System.out.println("내용 : " + boardVal.getContent());
@@ -43,7 +42,7 @@ public class BoardController {
       boardService.boardPost(board);
 
       return "boardpost";
-    }catch(Exception e) {
+    } catch (Exception e) {
       System.out.println("Error : 게시물 수정에 실패했습니다.");
       return "boardpost";
     }
@@ -59,13 +58,14 @@ public class BoardController {
 
   @GetMapping("/board/detail/{boardId}")
   @Operation(summary = "게시물 세부정보 조회", description = "게시물 세부정보 조회 API")
-  public String boardDetailSearch(@PathVariable("boardId") int boardId) throws Exception{
+  public String boardDetailSearch(@PathVariable("boardId") int boardId) throws Exception {
     try {
       BoardDto boardDto = boardService.getBoardDetail(boardId);
 
-      System.out.println(boardDto.getId() + " " + boardDto.getTitle() + " " + boardDto.getContent());
+      System.out.println(
+          boardDto.getId() + " " + boardDto.getTitle() + " " + boardDto.getContent());
       return "boardlist";
-    }catch(Exception e) {
+    } catch (Exception e) {
       System.out.println("Error : 게시물 조회에 실패했습니다.");
       return "boardlist";
     }
@@ -73,11 +73,11 @@ public class BoardController {
 
   @PutMapping("/board/update")
   @Operation(summary = "게시물 수정", description = "게시물 수정 API")
-  public String updateBoard(Integer id, BoardRequestDto boardRequestDto) throws Exception{
+  public String updateBoard(Integer id, BoardRequestDto boardRequestDto) throws Exception {
     try {
       boardService.updateBoard(id, boardRequestDto);
       return "boardlist";
-    }catch(Exception e) {
+    } catch (Exception e) {
       System.out.println("Error : 게시물 수정에 실패했습니다.");
       return "boardlist";
     }

@@ -19,13 +19,13 @@ public abstract class BaseTimeEntity {
   private String updated_at;
 
   @PrePersist
-  void onPrePersist(){
+  void onPrePersist() {
     this.created_at = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
     this.updated_at = created_at;
   }
 
   @PreUpdate
-  void onPreUpdate(){
+  void onPreUpdate() {
     this.updated_at = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
   }
 }

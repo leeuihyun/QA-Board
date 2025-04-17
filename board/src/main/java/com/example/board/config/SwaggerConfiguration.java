@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
-    info =@Info(
-        title ="Example API Docs",
+    info = @Info(
+        title = "Example API Docs",
         description = "Description",
         version = "v1"
     )

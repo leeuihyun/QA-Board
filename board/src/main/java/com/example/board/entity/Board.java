@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Board extends BaseTimeEntity{
+public class Board extends BaseTimeEntity {
 
   @Id // 프라이머리키를 의미
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class Board extends BaseTimeEntity{
   }
 
   public void addViewCnt() {
-    this.viewcnt ++;
+    this.viewcnt++;
   }
 
   public void updateBoard(String title, String content) {

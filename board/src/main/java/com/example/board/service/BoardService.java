@@ -19,7 +19,7 @@ public class BoardService {
   @Autowired //의존성주입
   private BoardRepository boardRepository;
 
-  public void boardPost(BoardDto board){
+  public void boardPost(BoardDto board) {
     // 제목 중복 체크할 수 있을듯
     Board boardEntity = new Board(board.getTitle(), board.getContent(), board.getMemberid(), 0);
     boardRepository.save(boardEntity);
@@ -34,25 +34,25 @@ public class BoardService {
     Optional<Board> board = boardRepository.findById(boardId);
     //dirtyChecking
     // 이 부분 TIL 작성 board.get() => board.isPresent 권장되는 듯 함
-    if(board.isPresent()) {
+    if (board.isPresent()) {
       Board boardEntity = board.get();
       boardEntity.addViewCnt();
 
       return new BoardDto(boardEntity);
-    }else {
+    } else {
       throw new Exception("search exception");
     }
   }
 
   @Transactional
-  public Integer updateBoard(Integer id, BoardRequestDto requestDto) throws Exception{
+  public Integer updateBoard(Integer id, BoardRequestDto requestDto) throws Exception {
     Optional<Board> boardEntity = boardRepository.findById(id);
 
-    if(boardEntity.isPresent()) {
-      Board board =  boardEntity.get();
+    if (boardEntity.isPresent()) {
+      Board board = boardEntity.get();
       board.updateBoard(requestDto.getTitle(), requestDto.getContent());
       return id;
-    }else {
+    } else {
       throw new Exception("update exception");
     }
   }
