@@ -6,10 +6,7 @@ import com.example.board.entity.Board;
 import com.example.board.repository.BoardRepository;
 import java.util.List;
 import java.util.Optional;
-import javax.swing.text.html.Option;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,13 +55,12 @@ public class BoardService {
   }
 
   public void deleteBoard(Integer boardId) throws Exception {
-    // Optional<Board> board = boardRepository.findById(boardId);
-    // deleteById는 findById를 포함하여 검사하기 때문에 조회 추가적으로 필요 X
-    try {
-      boardRepository.deleteById(boardId);
-    } catch (IllegalArgumentException e) {
-      System.out.println(e.getMessage());
-    }
+    Optional<Board> board = boardRepository.findById(boardId);
 
+    if (board.isPresent()) {
+      boardRepository.delete(board.get());
+    } else {
+      throw new Exception("Id Null Exception");
+    }
   }
 }
