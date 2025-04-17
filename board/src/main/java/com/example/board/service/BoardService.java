@@ -56,4 +56,15 @@ public class BoardService {
       throw new Exception("update exception");
     }
   }
+
+  public void deleteBoard(Integer boardId) throws Exception {
+    // Optional<Board> board = boardRepository.findById(boardId);
+    // deleteById는 findById를 포함하여 검사하기 때문에 조회 추가적으로 필요 X
+    try {
+      boardRepository.deleteById(boardId);
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+    }
+
+  }
 }

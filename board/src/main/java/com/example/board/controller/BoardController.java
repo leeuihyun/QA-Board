@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -79,6 +80,18 @@ public class BoardController {
       return "boardlist";
     } catch (Exception e) {
       System.out.println("Error : 게시물 수정에 실패했습니다.");
+      return "boardlist";
+    }
+  }
+
+  @DeleteMapping("/board/delete/{boardId}")
+  @Operation(summary = "게시글 삭제", description = "게시글 삭제 API")
+  public String deleteBoard(@PathVariable("boardId") int boardId) throws Exception {
+    try {
+      boardService.deleteBoard(boardId);
+      return "boardlist";
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
       return "boardlist";
     }
   }
