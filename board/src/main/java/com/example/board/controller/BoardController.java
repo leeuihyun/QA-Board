@@ -4,6 +4,7 @@ import com.example.board.dto.BoardDto;
 import com.example.board.dto.BoardRequestDto;
 import com.example.board.entity.Board;
 import com.example.board.service.BoardService;
+import com.example.board.service.BoardServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
