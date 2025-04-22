@@ -1,16 +1,15 @@
 package com.example.board.config;
 
-import com.example.board.jwt.JWTFilter;
-import com.example.board.jwt.JWTUtil;
-import com.example.board.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -18,56 +17,48 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-  //AuthenticationManager가 인자로 받을 AuthenticationConfiguraion 객체 생성자 주입
-  private final AuthenticationConfiguration authenticationConfiguration;
-  private final JWTUtil jwtUtil;
-
-  public SecurityConfig(AuthenticationConfiguration authenticationConfiguration, JWTUtil jwtUtil) {
-    this.authenticationConfiguration = authenticationConfiguration;
-    this.jwtUtil = jwtUtil;
-  }
-
-  //AuthenticationManager Bean 등록
   @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration)
-      throws Exception {
-    return configuration.getAuthenticationManager();
-  }
-
-  @Bean
-  public BCryptPasswordEncoder bCryptPasswordEncoder() {
+  public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
   }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    //csrf disable
     http
-        .csrf((auth) -> auth.disable());
-    //From 로그인 방식 disable
-    http
-        .formLogin((auth) -> auth.disable());
-    //http basic 인증 방식 disable
-    http
-        .httpBasic((auth) -> auth.disable());
-    //경로별 인가 작업
-    http
-        .authorizeHttpRequests((auth) -> auth
-            .requestMatchers("/login", "/", "/signup").permitAll()
-            .requestMatchers("/admin").hasRole("ADMIN")
-            .anyRequest().authenticated());
-
-    http.addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
-    
-    http
-        .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil),
-            UsernamePasswordAuthenticationFilter.class);
-
-    //세션 설정
-    http
-        .sessionManagement((session) -> session
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers(
+                "/login", "/signup", "/css/**",
+                "/v3/api-docs/**",
+                "/v3/api-docs",
+                "/api-docs",
+                "/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/swagger-resources/**",
+                "/swagger-resources",
+                "/webjars/**",
+                "/home"
+            ).permitAll()
+            .anyRequest().authenticated()
+        )
+        .formLogin(form -> form
+            .loginPage("/login")
+            .defaultSuccessUrl("/home", true)
+            .permitAll()
+        )
+        .logout(logout -> logout
+            .logoutUrl("/api/logout")
+            .logoutSuccessUrl("/home")
+            .invalidateHttpSession(true)
+        );
     return http.build();
   }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
+      throws Exception {
+    return config.getAuthenticationManager();
+  }
+
 }

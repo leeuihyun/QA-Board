@@ -27,13 +27,7 @@ public class SwaggerConfiguration {
   public OpenAPI openAPI() {
     String securityJwtName = "JWT";
     SecurityRequirement securityRequirement = new SecurityRequirement().addList(securityJwtName);
-    Components components = new Components()
-        .addSecuritySchemes(securityJwtName, new SecurityScheme()
-            .name(securityJwtName)
-            .type(SecurityScheme.Type.HTTP)
-            .scheme(BEARER_TOKEN_PREFIX)
-            .bearerFormat(securityJwtName)
-        );
+    Components components = new Components();
 
     return new OpenAPI()
         .addSecurityItem(securityRequirement)

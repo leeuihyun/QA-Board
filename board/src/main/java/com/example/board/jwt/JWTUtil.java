@@ -1,3 +1,5 @@
+// JWT TOKEN
+/*
 package com.example.board.jwt;
 
 import io.jsonwebtoken.Claims;
@@ -52,4 +54,4 @@ public class JWTUtil {
         .signWith(key, SignatureAlgorithm.HS256)
         .compact();
   }
-}
+}*/

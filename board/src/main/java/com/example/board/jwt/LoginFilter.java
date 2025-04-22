@@ -1,3 +1,5 @@
+// JWT TOKEN
+/*
 package com.example.board.jwt;
 
 import com.example.board.dto.CustomUserDetails;
@@ -79,3 +81,4 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     response.setStatus(401);
   }
 }
+*/

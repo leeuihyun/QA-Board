@@ -1,9 +1,10 @@
-package com.example.board.dto;
+package com.example.board.security;
 
 import com.example.board.entity.User;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class CustomUserDetails implements UserDetails {
@@ -16,16 +17,7 @@ public class CustomUserDetails implements UserDetails {
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    Collection<GrantedAuthority> collection = new ArrayList<>();
-    collection.add(new GrantedAuthority() {
-      @Override
-      public String getAuthority() {
-
-        return user.getRole();
-      }
-    });
-
-    return collection;
+    return List.of(new SimpleGrantedAuthority(user.getRole()));
   }
 
   @Override
@@ -36,5 +28,9 @@ public class CustomUserDetails implements UserDetails {
   @Override
   public String getUsername() {
     return user.getUseremail();
+  }
+  
+  public User getUser() {
+    return this.user;
   }
 }

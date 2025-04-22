@@ -1,3 +1,5 @@
+// JWT TOKEN
+/*
 package com.example.board.jwt;
 
 import com.example.board.dto.CustomUserDetails;
@@ -34,7 +36,7 @@ public class JWTFilter extends OncePerRequestFilter {
     }
 
     System.out.println("authorization now");
-    
+
     String token = authorization.split(" ")[1];
 
     //토큰 소멸 시간 검증
@@ -69,3 +71,4 @@ public class JWTFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
   }
 }
+*/

@@ -4,5 +4,5 @@ import com.example.board.dto.UserDto;
 
 public interface UserService {
 
-  void signUp(UserDto userDto);
+  void signUp(UserDto userDto) throws Exception;
 }

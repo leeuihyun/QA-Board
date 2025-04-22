@@ -1,3 +1,5 @@
+// JWT TOKEN
+/*
 package com.example.board.dto;
 
 import lombok.AllArgsConstructor;
@@ -13,3 +15,4 @@ public class JwtTokenDto {
   private String accessToken;
   private String refreshToken;
 }
+*/
