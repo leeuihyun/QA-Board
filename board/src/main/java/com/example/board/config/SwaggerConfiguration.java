@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
     info = @Info(
-        title = "Example API Docs",
-        description = "Description",
+        title = "게시판",
+        description = "게시판",
         version = "v1"
     )
 )
@@ -21,16 +21,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfiguration {
 
-  private static final String BEARER_TOKEN_PREFIX = "Bearer";
-
   @Bean
   public OpenAPI openAPI() {
-    String securityJwtName = "JWT";
-    SecurityRequirement securityRequirement = new SecurityRequirement().addList(securityJwtName);
-    Components components = new Components();
+    SecurityScheme auth = new SecurityScheme()
+        .type(SecurityScheme.Type.APIKEY).in(SecurityScheme.In.COOKIE).name("JSESSIONID");
+    SecurityRequirement securityRequirement = new SecurityRequirement().addList("basicAuth");
 
     return new OpenAPI()
-        .addSecurityItem(securityRequirement)
-        .components(components);
+        .components(new Components().addSecuritySchemes("basicAuth", auth))
+        .addSecurityItem(securityRequirement);
   }
 }
