@@ -7,6 +7,8 @@ import com.example.board.repository.BoardRepository;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +31,7 @@ public class BoardServiceImpl implements BoardService {
   @Transactional
   public BoardDto getBoardDetail(Integer boardId) throws Exception {
     Optional<Board> board = boardRepository.findById(boardId);
-    //dirtyChecking
-    // 이 부분 TIL 작성 board.get() => board.isPresent 권장되는 듯 함
+
     if (board.isPresent()) {
       Board boardEntity = board.get();
       boardEntity.addViewCnt();
@@ -61,6 +62,19 @@ public class BoardServiceImpl implements BoardService {
       boardRepository.delete(board.get());
     } else {
       throw new Exception("Id Null Exception");
+    }
+  }
+
+  @Override
+  public Page<Board> selectTitleContainingBoard(String title, Pageable pageable) throws Exception {
+    try {
+      if (title == null || title.trim().isEmpty()) {
+        return boardRepository.findAll(pageable);
+      }
+      return boardRepository.findAllByTitleContaining(title, pageable);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
     }
   }
 }

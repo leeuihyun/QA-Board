@@ -18,8 +18,8 @@ public class SessionStorage {
     sessions.remove(sessionId);
   }
 
-  public String getEmailBySessionId(String sessionId) {
-    return (String) sessions.get(sessionId).getAttribute("email");
+  public String getIdBySessionId(String sessionId) {
+    return (String) sessions.get(sessionId).getAttribute("id");
   }
 
   public boolean doesNotContains(String sessionId) {

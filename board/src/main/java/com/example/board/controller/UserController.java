@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.dto.LogInDto;
+import com.example.board.dto.ResponseMessage;
 import com.example.board.dto.UserDto;
 import com.example.board.dto.UserIdDto;
 import com.example.board.security.SessionUtil;
@@ -9,7 +10,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,28 +31,40 @@ public class UserController {
   private SessionUtil sessionUtil;
 
   @GetMapping("/home")
-  public String homePage(HttpServletRequest request) {
-    HttpSession session = request.getSession(false);
-    System.out.println("▶ 기존 세션: " + session);
-
-    HttpSession forceSession = request.getSession();
-    System.out.println("▶ 강제로 만든 세션: " + forceSession.getId());
+  public String homePage() {
     return "home";
   }
 
   @GetMapping("/signup")
-  public String signUpPage() {
-    return "signup";
+  public String signUpPage(HttpServletRequest request) throws Exception {
+    try {
+      sessionUtil.checkSession(request);
+    } catch (Exception e) {
+      return "signup";
+    }
+    return "redirect:/home";
   }
 
   @GetMapping("/login")
-  public String logInPage() {
-    return "login";
+  public String logInPage(HttpServletRequest request) throws Exception {
+    try {
+      sessionUtil.checkSession(request);
+    } catch (Exception e) {
+      return "login";
+    }
+    return "redirect:/home";
+
   }
 
   @GetMapping("/logout")
-  public String logOutPage() {
+  public String logOutPage(HttpServletRequest request) {
+    try {
+      sessionUtil.checkSession(request);
+    } catch (Exception e) {
+      return "redirect:/home";
+    }
     return "logout";
+
   }
 
   @PostMapping("/signup")
@@ -63,10 +74,12 @@ public class UserController {
       userService.signUp(userDto);
     } catch (Exception e) {
       System.out.println(e.getMessage());
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(new ResponseMessage("회원가입 에러", false));
     }
 
-    return ResponseEntity.status(HttpStatus.OK).body(userDto);
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(new ResponseMessage("회원가입 성공", true));
   }
 
   @PostMapping("/login")
@@ -78,10 +91,12 @@ public class UserController {
       userService.logIn(logInDto, request);
     } catch (Exception e) {
       e.printStackTrace();
-      throw new Exception("로그인 에러");
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(new ResponseMessage("로그인 에러", false));
     }
 
-    return ResponseEntity.status(HttpStatus.OK).build();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(new ResponseMessage("로그인 성공", true));
   }
 
   @PostMapping("logout")
@@ -89,13 +104,16 @@ public class UserController {
   public ResponseEntity<?> logOut(HttpServletRequest request, HttpServletResponse response)
       throws Exception {
     try {
-      boolean sessionIsExist = sessionUtil.checkSession(request);
+      sessionUtil.checkSession(request);
       userService.logOut(request, response);
     } catch (Exception e) {
-      throw new Exception(e.getMessage());
+      e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(new ResponseMessage("로그아웃 에러", false));
     }
 
-    return ResponseEntity.status(HttpStatus.OK).build();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(new ResponseMessage("로그아웃 성공", true));
   }
 
   @PostMapping("/delete/user")
@@ -104,12 +122,14 @@ public class UserController {
       HttpServletResponse response)
       throws Exception {
     try {
-      boolean sessionIsExist = sessionUtil.checkSession(request);
+      sessionUtil.checkSession(request);
       userService.deleteUser(userIdDto.getUserId(), request, response);
     } catch (Exception e) {
-      throw new Exception(e.getMessage());
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(new ResponseMessage("계정 삭제 실패", false));
     }
 
-    return ResponseEntity.status(HttpStatus.OK).build();
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(new ResponseMessage("계정 삭제 성공", true));
   }
 }

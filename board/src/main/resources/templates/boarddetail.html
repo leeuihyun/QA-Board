@@ -5,34 +5,33 @@
       layout:decorate="~{layout/default}">
 
 <head>
-  <title>게시글 작성</title>
+  <title>게시물 조회 페이지</title>
+  <script>
+    console.log("test");
+  </script>
 </head>
-<!-- ✅ JS: 버튼 클릭 시 fetch로 JSON 전송 -->
 
+<body>  <!-- ✅ 반드시 필요 -->
 <div layout:fragment="content">
   <div class="container mt-5">
-    <h2 class="mb-4">게시글 작성</h2>
+    <h2 class="mb-4">게시글 조회</h2>
 
-    <!-- ✅ form 제거하고 input만 유지 -->
     <div class="p-4 bg-white rounded shadow-sm">
       <div class="mb-3">
         <label for="title" class="form-label">제목</label>
-        <input type="text" class="form-control" id="title" placeholder="제목을 입력하세요" required>
+        <input type="text" class="form-control" id="title" th:value="${boardDetail.title}"
+               required>
       </div>
 
       <div class="mb-3">
         <label for="content" class="form-label">내용</label>
-        <textarea class="form-control" id="content" rows="5" placeholder="내용을 입력하세요"
+        <textarea class="form-control" id="content" rows="5" th:text="${boardDetail.content}"
                   required></textarea>
       </div>
-
-      <!-- ✅ type="button"으로 설정 -->
-      <button type="button" class="btn btn-primary" id="writeButton">
-        작성하기
-      </button>
     </div>
   </div>
 </div>
 
+</body>
 
 </html>

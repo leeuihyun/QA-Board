@@ -1,5 +1,6 @@
 package com.example.board.service;
 
+import com.example.board.entity.Board;
 import com.example.board.security.Encoder;
 import com.example.board.dto.LogInDto;
 import com.example.board.dto.UserDto;
@@ -14,6 +15,7 @@ import jakarta.servlet.http.HttpSession;
 import java.util.Base64;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -65,7 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
     HttpSession session = request.getSession(true);
-    session.setAttribute("email", user.getUseremail());
+    session.setAttribute("id", user.getId().toString());
     session.setMaxInactiveInterval(3600);
     String sessionId = session.getId();
     sessionStorage.addSession(sessionId, session);
