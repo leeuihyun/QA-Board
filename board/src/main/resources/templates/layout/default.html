@@ -44,7 +44,13 @@
       }
     });
   });
+  $('#login-button').click(function () {
+    window.location.href = '/login';
+  });
 
+  $('#signup-button').click(function () {
+    window.location.href = '/signup';
+  });
   $('#submitBtn').click(function () {
     const email = $('#email').val();
     const password = $('#password').val();
