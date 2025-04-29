@@ -36,7 +36,7 @@ public class UserController {
   }
 
   @GetMapping("/signup")
-  public String signUpPage(HttpServletRequest request) throws Exception {
+  public String signUpPage(HttpServletRequest request) {
     try {
       sessionUtil.checkSession(request);
     } catch (Exception e) {
@@ -46,7 +46,7 @@ public class UserController {
   }
 
   @GetMapping("/login")
-  public String logInPage(HttpServletRequest request) throws Exception {
+  public String logInPage(HttpServletRequest request) {
     try {
       sessionUtil.checkSession(request);
     } catch (Exception e) {
@@ -69,7 +69,7 @@ public class UserController {
 
   @PostMapping("/signup")
   @Operation(summary = "회원가입", description = "회원가입 API")
-  public ResponseEntity<?> signUp(@RequestBody UserDto userDto) throws Exception {
+  public ResponseEntity<?> signUp(@RequestBody UserDto userDto) {
     try {
       userService.signUp(userDto);
     } catch (Exception e) {
@@ -101,8 +101,7 @@ public class UserController {
 
   @PostMapping("logout")
   @Operation(summary = "로그아웃", description = "로그아웃 API")
-  public ResponseEntity<?> logOut(HttpServletRequest request, HttpServletResponse response)
-      throws Exception {
+  public ResponseEntity<?> logOut(HttpServletRequest request, HttpServletResponse response) {
     try {
       sessionUtil.checkSession(request);
       userService.logOut(request, response);
@@ -119,8 +118,7 @@ public class UserController {
   @PostMapping("/delete/user")
   @Operation(summary = "회원 계정 삭제", description = "회원 계정 삭제 API")
   public ResponseEntity<?> delete(@RequestBody UserIdDto userIdDto, HttpServletRequest request,
-      HttpServletResponse response)
-      throws Exception {
+      HttpServletResponse response) {
     try {
       sessionUtil.checkSession(request);
       userService.deleteUser(userIdDto.getUserId(), request, response);

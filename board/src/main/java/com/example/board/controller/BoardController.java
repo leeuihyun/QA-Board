@@ -77,8 +77,7 @@ public class BoardController {
   @PostMapping("/api/board/writeboard")
   @Operation(summary = "게시물 작성", description = "게시물 작성 API")
   public ResponseEntity<?> writeBoard(@RequestBody BoardRequestDto boardVal,
-      HttpServletRequest request)
-      throws Exception {
+      HttpServletRequest request) {
     try {
       boolean check = sessionUtil.checkSession(request);
       BoardDto board = new BoardDto(boardVal.getTitle(), boardVal.getContent(), 3);
@@ -102,8 +101,7 @@ public class BoardController {
 
   @GetMapping("/api/board/detail/{boardId}")
   @Operation(summary = "게시물 세부정보 조회", description = "게시물 세부정보 조회 API")
-  public ResponseEntity<?> boardDetailSearch(@PathVariable("boardId") int boardId)
-      throws Exception {
+  public ResponseEntity<?> boardDetailSearch(@PathVariable("boardId") int boardId) {
     try {
       BoardDto boardDto = boardService.getBoardDetail(boardId);
 
@@ -118,8 +116,7 @@ public class BoardController {
   @PutMapping("/api/board/update")
   @Operation(summary = "게시물 수정", description = "게시물 수정 API")
   public ResponseEntity<?> updateBoard(Integer id, BoardRequestDto boardRequestDto,
-      HttpServletRequest request)
-      throws Exception {
+      HttpServletRequest request) {
     try {
       sessionUtil.checkSession(request);
       boardService.updateBoard(id, boardRequestDto);
@@ -133,7 +130,7 @@ public class BoardController {
   @DeleteMapping("/api/board/delete/{boardId}")
   @Operation(summary = "게시글 삭제", description = "게시글 삭제 API")
   public ResponseEntity<?> deleteBoard(@PathVariable("boardId") int boardId,
-      HttpServletRequest request) throws Exception {
+      HttpServletRequest request) {
     try {
       sessionUtil.checkSession(request);
       boardService.deleteBoard(boardId);
